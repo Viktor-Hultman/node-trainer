@@ -2,14 +2,19 @@ var express = require('express'),
   path = require('path'),
   app = express();
 
-//set the port
+
 app.set('port', 3000);
 
-//tell express that we want to use the www folder
-//for our static assets
-app.use(express.static(path.join(__dirname, '../www')));
+//https://expressjs.com/en/starter/static-files.html
+app.use(express.static('public'));
 
-// Listen for requests
+
+app.get('/hello', (req, res) => {
+  res.send('<h2>Hello from the server!</h2>')
+})
+
+
 var server = app.listen(app.get('port'), function () {
   console.log('The server is running on http://localhost:' + app.get('port'));
 });
+
