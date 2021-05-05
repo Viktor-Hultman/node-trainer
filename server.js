@@ -59,6 +59,44 @@ app.post('/post', (req, res) => {
 
 })
 
+const vowelCounter = (string, res) => {
+  let counter = 0;
+  for(let i = 0; i < string.length; i++)  {
+    if(string[i] === "a"){
+      counter ++;
+    }
+    if(string[i] === "e"){
+      counter ++;
+    }
+    if(string[i] === "i"){
+      counter ++;
+    }
+    if(string[i] === "o"){
+      counter ++;
+    }
+    if(string[i] === "u"){
+      counter ++;
+    }
+    if(string[i] === "y"){
+      counter ++;
+    }
+    if(string[i] === "å"){
+      counter ++;
+    }
+    if(string[i] === "ä"){
+      counter ++;
+    }
+    if(string[i] === "ö"){
+      counter ++;
+    }
+  }
+  return res.send("Number of vowels in your string: " + counter)
+}
+
+app.post('/vowelCounter', (req, res) => {
+  vowelCounter(req.body.string, res)
+})
+
 
 var server = app.listen(app.get('port'), function () {
   console.log('The server is running on http://localhost:' + app.get('port'));
