@@ -3,7 +3,7 @@ var express = require('express'),
   app = express(),
   bodyParser = require('body-parser');
 
-app.set('port', 3000);
+app.set('port', 3001);
 
 const foodList = [
   {
@@ -57,18 +57,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-//https://expressjs.com/en/starter/static-files.html
-app.use(express.static(path.join(__dirname, 'public')));
-
 //https://medium.com/@onejohi/building-a-simple-rest-api-with-nodejs-and-express-da6273ed7ca9
 app.get('/random', (req, res) => {
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-  res.json({'number': Math.floor(Math.random() * 1023) + 1});
+//To get a number between 0-1023: syntax: Math.floor(Math.random() * (1023 + 1))
+  res.send({'number': Math.floor(Math.random() * (1023 + 1))});
 });
+
 
 //http://expressjs.com/en/api.html#req
 app.get('/random/:num', (req, res) => {
-  res.send({'number': Math.floor(Math.random() * req.params.num) + 1});
+  /*When getting the num from the 'req.params.num' the number is a string and cant be added with another number
+  that is why I use the Number() method to convert it when adding the '+1'.
+  This way if the user sends a 3 as the random number parameter the number will be between 0-3
+  */
+  res.send({'number': Math.floor(Math.random() * (Number(req.params.num) + 1))});
 });
 
 //https://medium.com/@haybams/build-a-restful-api-with-node-js-and-express-js-d7e59c7a3dfb
@@ -102,8 +105,16 @@ app.post('/vowel_counter', (req, res) => {
   vowelCounter(req.body.string, res)
 })
 
+app.get('/employees', (req, res) => {
+  res.send({ rows: 'Hello'})
+})
+
 
 var server = app.listen(app.get('port'), function () {
   console.log('The server is running on http://localhost:' + app.get('port'));
 });
+
+
+// Ways of exporting variables to other node.js files: https://stackoverflow.com/a/7612052
+module.exports = foodList;
 
